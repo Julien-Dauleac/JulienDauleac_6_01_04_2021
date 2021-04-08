@@ -1,8 +1,16 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const sass = require('node-sass');
+const mongoose = require('mongoose');
+
+const sauceRoutes = require('./routes/sauce');
 
 const app = express();
+
+mongoose.connect('mongodb+srv://LePaki:<HLEg#y3fCb7fK75e>@cluster0-pme76.mongodb.net/test?retryWrites=true&w=majority',
+    { useNewUrlParser: true,
+        useUnifiedTopology: true })
+    .then(() => console.log('Connexion à MongoDB réussie !'))
+    .catch(() => console.log('Connexion à MongoDB échouée !'));
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -13,31 +21,6 @@ app.use((req, res, next) => {
 
 app.use(bodyParser.json());
 
-app.post('/api/sauces', (req, res, next) => {
-  console.log(req.body);
-  res.status(201).json({
-      message: 'Objet crée !'
-  });
-});
-
-app.use('/api/sauces', (req, res, next) => {
-    const sauce = [
-        {
-            _id:'',
-            userId:'',
-            name:'',
-            manufacturer:'',
-            description:'',
-            mainPepper:'',
-            imageUrl:'',
-            heat:'',
-            likes:'',
-            dislikes:'',
-            usersLiked:'',
-            usersDisliked:''
-        },
-];
-    res.status(200).json(sauce)
-});
+app.use('/api/sauce', sauceRoutes);
 
 module.exports = app;
