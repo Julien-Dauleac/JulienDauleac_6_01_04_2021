@@ -1,7 +1,7 @@
 const Sauce = require('../models/Sauce');
 
 exports.createSauce = (req, res, next) => {
-    delete req.body.id;
+    delete req.body._id;
     const sauce = new Sauce({
         ...req.body
     });
