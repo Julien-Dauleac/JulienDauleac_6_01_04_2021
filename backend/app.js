@@ -8,7 +8,8 @@ const userRoutes = require('./routes/user');
 
 const app = express();
 
-mongoose.connect('mongodb+srv://LePaki: LePaki24011992.@cluster0-pme76.mongodb.net/test?retryWrites=true&w=majority',
+mongoose.connect('mongodb+srv://LePaki: LePaki24011992.@cluster0.btfxe.mongodb.net/myFirstDatabase?' +
+    'retryWrites=true&w=majority',
     { useNewUrlParser: true,
         useUnifiedTopology: true })
     .then(() => console.log('Connexion à MongoDB réussie !'))
