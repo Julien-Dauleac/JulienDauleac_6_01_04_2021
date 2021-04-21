@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const sauceSchema = mongoose.schema({
+const sauceSchema = mongoose.Schema({
     id: { type: Object, required: true },
     userId: { type: String, required: true },
     name: { type: String, required: true },
