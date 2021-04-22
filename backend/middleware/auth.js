@@ -1,4 +1,8 @@
+// On récupère le package jsonwebtoken //
 const jwt = require('jsonwebtoken');
+
+// On vérifie le TOKEN de l'utilisateur, s'il correspond à l'id de l'utilisateur dans la requête, il sera autorisé à changer les données correspondantes. //
+// Ce middleware sera appliqué à toutes les routes afin de les sécuriser //
 
 module.exports = (req, res, next) => {
     try {

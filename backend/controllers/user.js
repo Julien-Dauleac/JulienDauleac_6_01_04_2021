@@ -1,8 +1,11 @@
+// On utilise l'algorithme bcrypt pour hasher le mot de passe des utilisateurs //
 const bcrypt = require('bcrypt');
+// On récupère notre model User ,créer avec le schéma mongoose //
 const jwt = require('jsonwebtoken');
-
+// On utilise le package jsonwebtoken pour attribuer un token à un utilisateur au moment ou il se connecte //
 const User = require('../models/User');
 
+// On sauvegarde un nouvel utilisateur et crypte son mot de passe avec un hash généré par bcrypt //
 exports.signup = (req, res, next) => {
   bcrypt.hash(req.body.password, 10)
       .then(hash => {
@@ -10,6 +13,7 @@ exports.signup = (req, res, next) => {
               email: req.body.email,
               password: hash
           });
+          // On enregistre l'utilisateur dans la base de données //
           user.save()
               .then(() => res.status(201).json({ message: 'Utilisateur créé !' }))
               .catch(error => res.status(400).json({ error }));
@@ -17,6 +21,7 @@ exports.signup = (req, res, next) => {
       .catch(error => res.status(500).json({ error }));
 };
 
+// Le Middleware pour la connexion d'un utilisateur vérifie si l'utilisateur existe dans la base MongoDB lors du login //
 exports.login = (req, res, next) => {
     User.findOne({ email: req.body.email })
         .then(user => {
@@ -26,7 +31,7 @@ exports.login = (req, res, next) => {
             bcrypt.compare(req.body.password, user.password)
                 .then(valid => {
                     if (!valid) {
-                        return res.status(401).json({ error: 'Mot de passe incorrect !' });
+                        return res.status(401).json({ error: 'Mauvais utilisateur ou Mot de passe incorrect !' });
                     }
                     res.status(200).json({
                         userId: user._id,
@@ -35,6 +40,8 @@ exports.login = (req, res, next) => {
                             'RANDOM_TOKEN_SECRET',
                             { expiresIn: '24h' }
                         )
+                        // On encode le userID pour la création de nouveaux objets, et cela permet d'appliquer le bon userID
+                        // aux objets et ne pas modifier les objets des autres
                     });
                 })
                 .catch(error => res.status(500).json({ error }));
