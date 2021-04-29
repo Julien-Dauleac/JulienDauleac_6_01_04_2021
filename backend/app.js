@@ -1,4 +1,4 @@
-// import des modules npm - Ajout des plugins externes //
+// Import des modules npm - Ajout des plugins externes //
 const express = require('express');
 // Pour gérer la demande POST provenant de l'application front-end, nous devrons être capables d'extraire l'objet JSON de la demande, on importe donc body-parser //
 const bodyParser = require('body-parser');
@@ -6,6 +6,10 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 // On donne accès au chemin de notre système de fichier, plugin qui sert dans l'upload des images et permet de travailler avec les répertoires et chemin de fichier //
 const path = require('path');
+// On importe helmet pour plus de sécurité sur l'application //
+const helmet = require("helmet");
+// Require et configuration de Dotenv //
+require('dotenv').config()
 
 // Déclaration des routes //
 // On importe la route dédiée aux sauces //
@@ -17,12 +21,15 @@ const app = express();
 
 // Connection à la base de données MongoDB avec la sécurité vers le fichier .env pour cacher le mot de passe //
 
-mongoose.connect('mongodb+srv://LePaki: LePaki24011992.@cluster0.btfxe.mongodb.net/myFirstDatabase?' +
+mongoose.connect('mongodb+srv://'+process.env.DB_USER+': '+process.env.DB_MDP+''+process.env.DB_MAIL+'/'+process.env.DB_NAME+'' +
     'retryWrites=true&w=majority',
     { useNewUrlParser: true,
         useUnifiedTopology: true })
     .then(() => console.log('Connexion à MongoDB réussie !'))
     .catch(() => console.log('Connexion à MongoDB échouée !'));
+
+// Va à sécuriser l'application Express en définissant divers en-têtes HTTP //
+app.use(helmet());
 
 // Middleware Header pour contourner les erreurs en débloquant certains systèmes de sécurité CORS, afin que tout le monde puisse faire des requetes depuis son navigateur //
 
