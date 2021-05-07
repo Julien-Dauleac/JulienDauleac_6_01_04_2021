@@ -7,18 +7,18 @@ const User = require('../models/User');
 
 // On sauvegarde un nouvel utilisateur et crypte son mot de passe avec un hash généré par bcrypt //
 exports.signup = (req, res, next) => {
-  bcrypt.hash(req.body.password, 10)
-      .then(hash => {
-          const user = new User({
-              email: req.body.email,
-              password: hash
-          });
-          // On enregistre l'utilisateur dans la base de données //
-          user.save()
-              .then(() => res.status(201).json({ message: 'Utilisateur créé !' }))
-              .catch(error => res.status(400).json({ error }));
-      })
-      .catch(error => res.status(500).json({ error }));
+    bcrypt.hash(req.body.password, 10)
+        .then(hash => {
+            const user = new User({
+                email: req.body.email,
+                password: hash
+            });
+            // On enregistre l'utilisateur dans la base de données //
+            user.save()
+                .then(() => res.status(201).json({ message: 'Utilisateur créé !' }))
+                .catch(error => res.status(400).json({ error }));
+        })
+        .catch(error => res.status(500).json({ error }));
 };
 
 // Le Middleware pour la connexion d'un utilisateur vérifie si l'utilisateur existe dans la base MongoDB lors du login //
