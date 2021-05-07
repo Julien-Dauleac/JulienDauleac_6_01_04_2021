@@ -22,7 +22,7 @@ const port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
 // la fonction errorHandler recherche les différentes erreurs et les gère de manière appropriée //
-// pour ensuite enregistrée dans le serveur //
+// pour ensuite les enregistrées dans le serveur //
 const errorHandler = error => {
     if (error.syscall !== 'listen') {
         throw error;
@@ -47,7 +47,7 @@ const errorHandler = error => {
 // création d'une constante pour les appels serveur (requetes et reponses) //
 const server = http.createServer(app);
 
-// gestions des évenements serveur pour un retour console //
+// Gestions des évenements serveur pour un retour console //
 // Lance le serveur et affiche sur quel port se connecter ou gère les erreurs s'il y en a //
 server.on('error', errorHandler);
 server.on('listening', () => {

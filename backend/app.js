@@ -21,14 +21,14 @@ const app = express();
 
 // Connection à la base de données MongoDB avec la sécurité vers le fichier .env pour cacher le mot de passe //
 
-mongoose.connect('mongodb+srv://'+process.env.DB_USER+': '+process.env.DB_MDP+''+process.env.DB_MAIL+'/'+process.env.DB_NAME+'' +
+mongoose.connect('mongodb+srv://'+process.env.DB_USER+': '+process.env.DB_MDP+'@'+process.env.DB_HOST+'/'+process.env.DB_NAME+
     'retryWrites=true&w=majority',
     { useNewUrlParser: true,
         useUnifiedTopology: true })
     .then(() => console.log('Connexion à MongoDB réussie !'))
     .catch(() => console.log('Connexion à MongoDB échouée !'));
 
-// Va à sécuriser l'application Express en définissant divers en-têtes HTTP //
+// Va servir à sécuriser l'application Express en définissant divers en-têtes HTTP //
 app.use(helmet());
 
 // Middleware Header pour contourner les erreurs en débloquant certains systèmes de sécurité CORS, afin que tout le monde puisse faire des requetes depuis son navigateur //
