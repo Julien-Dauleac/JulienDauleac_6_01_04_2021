@@ -66,7 +66,7 @@ exports.getAllSauce = (req, res, next) => {
 };
 
 // Permet de "like" ou "dislike" une sauce //
-exports.likeDislike = (req, res, next) => {
+exports.likeDislikeSauce = (req, res, next) => {
     // Pour la route READ = Ajout/suppression d'un like / dislike à une sauce
     // Like présent dans le body
     let like = req.body.like
