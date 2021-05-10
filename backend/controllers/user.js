@@ -21,7 +21,7 @@ exports.signup = (req, res, next) => {
         .catch(error => res.status(500).json({ error }));
 };
 
-// Le Middleware pour la connexion d'un utilisateur vérifie si l'utilisateur existe dans la base MongoDB lors du login //
+// Le Middleware pour la connexion d'un utilisateur, vérifie si l'utilisateur existe dans la base MongoDB lors du login //
 exports.login = (req, res, next) => {
     User.findOne({ email: req.body.email })
         .then(user => {
@@ -41,7 +41,7 @@ exports.login = (req, res, next) => {
                             { expiresIn: '24h' }
                         )
                         // On encode le userID pour la création de nouveaux objets, et cela permet d'appliquer le bon userID //
-                        // aux objets et ne pas modifier ou supprimer les objets des autres //
+                        // aux objets et ne pas modifier ou supprimer les objets des autres utilisateurs //
                     });
                 })
                 .catch(error => res.status(500).json({ error }));
