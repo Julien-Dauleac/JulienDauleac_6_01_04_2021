@@ -1,8 +1,8 @@
 // On utilise l'algorithme bcrypt pour hasher le mot de passe des utilisateurs //
 const bcrypt = require('bcrypt');
-// On récupère notre model User ,créer avec le schéma mongoose //
-const jwt = require('jsonwebtoken');
 // On utilise le package jsonwebtoken pour attribuer un token à un utilisateur au moment ou il se connecte //
+const jwt = require('jsonwebtoken');
+// On récupère notre model User ,créer avec le schéma mongoose //
 const User = require('../models/User');
 
 // On sauvegarde un nouvel utilisateur et crypte son mot de passe avec un hash généré par bcrypt //
