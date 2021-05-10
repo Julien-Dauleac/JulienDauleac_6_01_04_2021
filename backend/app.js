@@ -10,6 +10,8 @@ const path = require('path');
 const helmet = require("helmet");
 // Require et configuration de Dotenv //
 require('dotenv').config()
+// On importe express-rate-limite pour limiter le nombe d'essai de connexion en cas d'attaque brute //
+const rateLimit = require("express-rate-limit");
 
 // Déclaration des routes //
 // On importe la route dédiée aux sauces //
@@ -39,6 +41,17 @@ app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
     next();
 });
+
+// Enable if you're behind a reverse proxy (Heroku, Bluemix, AWS ELB, Nginx, etc) //
+// see https://expressjs.com/en/guide/behind-proxies.html //
+// app.set('trust proxy', 1); //
+const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100 // limit each IP to 100 requests per windowMs
+});
+
+// apply to all requests //
+app.use(limiter);
 
 // Transforme les données arrivant de la requête POST en un objet JSON facilement exploitable //
 app.use(bodyParser.json());

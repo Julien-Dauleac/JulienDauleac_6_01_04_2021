@@ -4,13 +4,17 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 // On récupère notre model User ,créer avec le schéma mongoose //
 const User = require('../models/User');
+// On utilise crypto-js pour crypté l'email de l'utilisateur //
+const CryptoJS = require("crypto-js");
+// On crypte l'email //
+const cipherText = CryptoJS.AES.encrypt('+process.env.TEXT+', '+process.env.KEY+').toString();
 
 // On sauvegarde un nouvel utilisateur et crypte son mot de passe avec un hash généré par bcrypt //
 exports.signup = (req, res, next) => {
     bcrypt.hash(req.body.password, 10)
         .then(hash => {
             const user = new User({
-                email: req.body.email,
+                email: cipherText,
                 password: hash
             });
             // On enregistre l'utilisateur dans la base de données //
@@ -23,7 +27,7 @@ exports.signup = (req, res, next) => {
 
 // Le Middleware pour la connexion d'un utilisateur, vérifie si l'utilisateur existe dans la base MongoDB lors du login //
 exports.login = (req, res, next) => {
-    User.findOne({ email: req.body.email })
+    User.findOne({ email: cipherText })
         .then(user => {
             if (!user) {
                 return res.status(401).json({ error: 'Utilisateur non trouvé !' });
