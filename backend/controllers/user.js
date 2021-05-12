@@ -6,11 +6,12 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 // On utilise crypto-js pour crypté l'email de l'utilisateur //
 const CryptoJS = require("crypto-js");
-// On crypte l'email //
-const cipherText = CryptoJS.AES.encrypt('+process.env.TEXT+', '+process.env.KEY+').toString();
 
 // On sauvegarde un nouvel utilisateur et crypte son mot de passe avec un hash généré par bcrypt //
 exports.signup = (req, res, next) => {
+    // On crypte l'email //
+    const cipherText = CryptoJS.SHA256(req.body.email).toString();
+    // On crypte le mots de passe //
     bcrypt.hash(req.body.password, 10)
         .then(hash => {
             const user = new User({
@@ -27,6 +28,8 @@ exports.signup = (req, res, next) => {
 
 // Le Middleware pour la connexion d'un utilisateur, vérifie si l'utilisateur existe dans la base MongoDB lors du login //
 exports.login = (req, res, next) => {
+    // On décrypte l'email //
+    const cipherText = CryptoJS.SHA256(req.body.email).toString();
     User.findOne({ email: cipherText })
         .then(user => {
             if (!user) {
